@@ -7,40 +7,22 @@ import re
 from datetime import datetime
 
 
-def get_movie_data(pages):
-    """
-    input: number of pages you want to scrape
-    """
-    start = 1
-    for i in range(1, pages+1):
-        url = f'https://www.imdb.com/search/title/?groups=top_1000&view=simple&sort=user_rating,desc&count=100&start={start}&ref_=adv_nxt'
-        response = requests.get(url)
-        page = response.text
-        soup = BeautifulSoup(page)
-        start += 100
-
-
-    # https://www.imdb.com/search/title/?groups=top_1000&view=simple&sort=user_rating,desc&count=100&start=1&ref_=adv_nxt
-    # https://www.imdb.com/search/title/?groups=top_1000&view=simple&sort=user_rating,desc&count=100&start=101&ref_=adv_nxt
-
-    # url = f'https://www.imdb.com/search/title/?groups=top_1000&view=simple&sort=user_rating,desc&count=100&start={start}&ref_=adv_nxt'
-    # response = requests.get(url)
-    # response.status_code
-
-    # page = response.text
-    # soup = BeautifulSoup(page)
-
-    # movies = {}
-
-    # Make main dataframe
-    # Collect data
-
-
-def get_movie_value(soup):
+def get_movie_value(link):
     '''
     Makes a DataFrame from as many pages as requested.
 
     '''
+    base_url = 'https://www.imdb.com'
+
+    url = base_url + link
+
+    response = requests.get(url)
+    page = response.text
+    soup = BeautifulSoup(page)
+
+    headers = ['movie title', 'imdb rating', 'imdb raters', 'mpaa', 'genres', 'director', 'writer', 'stars', 'country', 'language',
+               'release date', 'budget', 'opening weekend', 'gross usa', 'cumulative worldwide', 'production companies', 'runtime']
+
     # Collect movie title
     title = soup.find(class_='title_wrapper').find(
         'h1').text.split('\xa0')[0]
@@ -75,6 +57,9 @@ def get_movie_value(soup):
         2].text.split('\n')[2].split(',')
     stars = [i.replace('|', "").strip() for i in stars_unclean]
 
+    # Collect country
+    
+
     # Collect close information in list
     data_list1 = [title, rating_10, raters,
                   mpaa, genres, director, writer, stars]
@@ -97,42 +82,27 @@ def get_movie_value(soup):
 
     # Clean up release date
     data_list1[10] = data_list1[10].split('(')[0].strip()
-    data_list1[10] = datetime.strptime(data_list1[10], '%d %B %Y').date()
+    try:
+        data_list1[10] = datetime.strptime(data_list1[10], '%d %B %Y').date()
+    except:
+        None
 
     # Clean up money categories
-    data_list1[11:15] = [money_to_int(trait) for trait in data_list1[11:15]]
+    try:
+        data_list1[11:15] = [money_to_int(trait)
+                             for trait in data_list1[11:15]]
+    except:
+        None
 
     # Clean up runtime
     data_list1[-1] = data_list1[-1].split(' ')[0]
 
-    return data_list1
+    # Create movie dictionary and return
+    movie_dict = dict(zip(headers, data_list1))
+
+    return movie_dict
 
 
 def money_to_int(moneystring):
     moneystring = moneystring.replace('$', '').replace(',', '')
     return int(moneystring)
-
-
-headers = ['movie title', 'imdb rating', 'imdb rater', 'mpaa', 'genres', 'director', 'writer', 'stars', 'country', 'language',
-           'release date', 'budget', 'opening weekend', 'gross usa', 'cumulative worldwide', 'production companies', 'runtime']
-
-# Title
-# Rating 10
-# Raters
-# MPAA
-# Genres
-# Director
-# Writer
-# Stars
-
-# Country
-# Language
-# Release Date
-# Budget
-# Opening Weekend
-# Gross USA
-# Cumulative Worldwide
-# Production Company
-# Length (min)
-# Color
-# Aspect Ratio
