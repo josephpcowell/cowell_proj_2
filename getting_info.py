@@ -24,58 +24,97 @@ def get_movie_data(link):
                'release date', 'budget', 'opening weekend', 'gross usa', 'cumulative worldwide', 'production companies', 'runtime (min)']
 
     # Collect movie title
-    title = soup.find(class_='title_wrapper').find(
-        'h1').text.split('\xa0')[0]
+    try:
+        title = soup.find(class_='title_wrapper').find(
+            'h1').text.split('\xa0')[0]
+    except:
+        title = None
 
     # Collect rating out of 10
-    rating_10 = float(soup.find(class_='ratingValue').span.text)
+    try:
+        rating_10 = float(soup.find(class_='ratingValue').span.text)
+    except:
+        rating_10 = None
 
     # Collect number of raters
-    raters = int(soup.find(class_='ratingValue').strong['title'].split()[
-        3].replace(',', ''))
+    try:
+        raters = int(soup.find(class_='ratingValue').strong['title'].split()[
+            3].replace(',', ''))
+    except:
+        raters = None
 
     # Segment data to make extraction easier
-    subtext = soup.find(class_='subtext').text.split('\n')
+    try:
+        subtext = soup.find(class_='subtext').text.split('\n')
+    except:
+        subtext = None
 
     # Collection MPAA
-    mpaa = subtext[1].strip()
+    try:
+        mpaa = subtext[1].strip()
+    except:
+        mpaa = None
 
     # Collect genres
-    genre = soup.find('h4', text=re.compile('Genre')).findParent().text
-    genre = [ele.strip().replace('\xa0|', '')
-             for ele in genre.split('\n')[2:-1]]
+    try:
+        genre = soup.find('h4', text=re.compile('Genre')).findParent().text
+        genre = [ele.strip().replace('\xa0|', '')
+                 for ele in genre.split('\n')[2:-1]]
+    except:
+        genre = None
 
     # Collect director
-    director = soup.find_all(class_='credit_summary_item')[
-        0].text.split('\n')[-1].strip()
+    try:
+        director = soup.find_all(class_='credit_summary_item')[
+            0].text.split('\n')[-1].strip()
+    except:
+        director = None
 
     # Collect writer
-    writer = soup.find_all(class_='credit_summary_item')[
-        1].text.split('\n')[2].split(',')[0]
-    writer = writer.split('(')[0].strip()
+    try:
+        writer = soup.find_all(class_='credit_summary_item')[
+            1].text.split('\n')[2].split(',')[0]
+        writer = writer.split('(')[0].strip()
+    except:
+        writer = None
 
     # Collect and clean list of stars
-    stars_unclean = soup.find_all(class_='credit_summary_item')[
-        2].text.split('\n')[2].split(',')
-    stars = [i.replace('|', "").strip() for i in stars_unclean]
+    try:
+        stars_unclean = soup.find_all(class_='credit_summary_item')[
+            2].text.split('\n')[2].split(',')
+        stars = [i.replace('|', "").strip() for i in stars_unclean]
+    except:
+        stars = None
 
     # Collect country
-    country = soup.find('h4', text=re.compile('Country')).findNext().text
+    try:
+        country = soup.find('h4', text=re.compile('Country')).findNext().text
+    except:
+        country = None
 
     # Collect language
-    language = soup.find('h4', text=re.compile('Language')).findNext().text
+    try:
+        language = soup.find('h4', text=re.compile('Language')).findNext().text
+    except:
+        language = None
 
     # Collect and clean release data
-    release_date = soup.find('h4', text=re.compile(
-        'Release Date')).findParent().text
-    release_date = release_date.split(
-        '\n')[1].split(':')[1].split('(')[0].strip()
-    release_date = datetime.strptime(release_date, '%d %B %Y').date()
+    try:
+        release_date = soup.find('h4', text=re.compile(
+            'Release Date')).findParent().text
+        release_date = release_date.split(
+            '\n')[1].split(':')[1].split('(')[0].strip()
+        release_date = datetime.strptime(release_date, '%d %B %Y').date()
+    except:
+        release_date = None
 
     # Collect budget
-    budget = soup.find('h4', text=re.compile('Budget')).findParent().text
-    budget = budget.split('\n')[1].split(':')[1]
-    budget = money_to_int(budget)
+    try:
+        budget = soup.find('h4', text=re.compile('Budget')).findParent().text
+        budget = budget.split('\n')[1].split(':')[1]
+        budget = money_to_int(budget)
+    except:
+        budget = None
 
     # Collect opening weekend
     try:
@@ -97,20 +136,29 @@ def get_movie_data(link):
         gross_usa = None
 
     # Collect worldwide gross
-    worldwide = soup.find('h4', text=re.compile(
-        'Cumulative Worldwide')).findParent().text
-    worldwide = worldwide.split(':')[1].strip()
-    worldwide = money_to_int(worldwide)
+    try:
+        worldwide = soup.find('h4', text=re.compile(
+            'Cumulative Worldwide')).findParent().text
+        worldwide = worldwide.split(':')[1].strip()
+        worldwide = money_to_int(worldwide)
+    except:
+        worldwide = None
 
     # Collect production companies
-    production_co = soup.find('h4', text=re.compile(
-        'Production Co')).findParent().text
-    production_co = production_co.split('\n')[2].strip()
-    production_co = [co.strip() for co in production_co.split(',')]
+    try:
+        production_co = soup.find('h4', text=re.compile(
+            'Production Co')).findParent().text
+        production_co = production_co.split('\n')[2].strip()
+        production_co = [co.strip() for co in production_co.split(',')]
+    except:
+        production_co = None
 
     # Collect runtime
-    runtime = soup.find('h4', text=re.compile('Runtime')).findParent().text
-    runtime = int(runtime.split('\n')[2].split(' ')[0])
+    try:
+        runtime = soup.find('h4', text=re.compile('Runtime')).findParent().text
+        runtime = int(runtime.split('\n')[2].split(' ')[0])
+    except:
+        runtime = None
 
     data_list = [title, rating_10, raters, mpaa, genre,
                  director, writer, stars, country, language,
