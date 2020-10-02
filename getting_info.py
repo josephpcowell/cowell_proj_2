@@ -7,7 +7,7 @@ import re
 from datetime import datetime
 
 
-def get_movie_value(link):
+def get_movie_data(link):
     '''
     Makes a DataFrame from as many pages as requested.
 
@@ -21,7 +21,7 @@ def get_movie_value(link):
     soup = BeautifulSoup(page)
 
     headers = ['movie title', 'imdb rating', 'imdb raters', 'mpaa', 'genres', 'director', 'writer', 'stars', 'country', 'language',
-               'release date', 'budget', 'opening weekend', 'gross usa', 'cumulative worldwide', 'production companies', 'runtime']
+               'release date', 'budget', 'opening weekend', 'gross usa', 'cumulative worldwide', 'production companies', 'runtime (min)']
 
     # Collect movie title
     title = soup.find(class_='title_wrapper').find(
@@ -41,7 +41,9 @@ def get_movie_value(link):
     mpaa = subtext[1].strip()
 
     # Collect genres
-    genres = [genre.replace(',', '').strip() for genre in subtext[6:8]]
+    genre = soup.find('h4', text=re.compile('Genre')).findParent().text
+    genre = [ele.strip().replace('\xa0|', '')
+             for ele in genre.split('\n')[2:-1]]
 
     # Collect director
     director = soup.find_all(class_='credit_summary_item')[
@@ -58,47 +60,64 @@ def get_movie_value(link):
     stars = [i.replace('|', "").strip() for i in stars_unclean]
 
     # Collect country
-    
+    country = soup.find('h4', text=re.compile('Country')).findNext().text
 
-    # Collect close information in list
-    data_list1 = [title, rating_10, raters,
-                  mpaa, genres, director, writer, stars]
-    detail_list = [detail.findParent().text for detail in soup.find(
-        id='titleDetails').find_all('h4')]
-    detail_list_2 = [detail_list[0], detail_list[1], detail_list[2], detail_list[5], detail_list[6],
-                     detail_list[7], detail_list[8], detail_list[9], detail_list[10]]
-    for counter, attribute in enumerate(detail_list_2):
-        detail_list_2[counter] = attribute.split('\n')
-    detail_list_3 = [detail_list_2[0][2], detail_list_2[1][2], detail_list_2[2][1], detail_list_2[3][1], detail_list_2[4][1],
-                     detail_list_2[5][1], detail_list_2[6][1], detail_list_2[7][2], detail_list_2[8][2]]
-    data_list1.extend(detail_list_3[:])
+    # Collect language
+    language = soup.find('h4', text=re.compile('Language')).findNext().text
 
-    # Clean sections with description
-    data_list1[10:15] = [trait.split(':')[1].strip(' ,')
-                         for trait in data_list1[10:15]]
+    # Collect and clean release data
+    release_date = soup.find('h4', text=re.compile(
+        'Release Date')).findParent().text
+    release_date = release_date.split(
+        '\n')[1].split(':')[1].split('(')[0].strip()
+    release_date = datetime.strptime(release_date, '%d %B %Y').date()
 
-    # Clean up Production Company
-    data_list1[15] = [trait.strip() for trait in data_list1[15].split(',')]
+    # Collect budget
+    budget = soup.find('h4', text=re.compile('Budget')).findParent().text
+    budget = budget.split('\n')[1].split(':')[1]
+    budget = money_to_int(budget)
 
-    # Clean up release date
-    data_list1[10] = data_list1[10].split('(')[0].strip()
+    # Collect opening weekend
     try:
-        data_list1[10] = datetime.strptime(data_list1[10], '%d %B %Y').date()
+        opening_weekend = soup.find('h4', text=re.compile(
+            'Opening Weekend')).findParent().text
+        opening_weekend = opening_weekend.split(
+            '\n')[1].split(':')[1].strip(' ,')
+        opening_weekend = money_to_int(opening_weekend)
     except:
-        None
+        opening_weekend = None
 
-    # Clean up money categories
+    # Collect GROSS USA
     try:
-        data_list1[11:15] = [money_to_int(trait)
-                             for trait in data_list1[11:15]]
+        gross_usa = soup.find('h4', text=re.compile(
+            'Gross USA')).findParent().text
+        gross_usa = gross_usa.split('\n')[1].split(':')[1].strip(' ,')
+        gross_usa = money_to_int(gross_usa)
     except:
-        None
+        gross_usa = None
 
-    # Clean up runtime
-    data_list1[-1] = data_list1[-1].split(' ')[0]
+    # Collect worldwide gross
+    worldwide = soup.find('h4', text=re.compile(
+        'Cumulative Worldwide')).findParent().text
+    worldwide = worldwide.split(':')[1].strip()
+    worldwide = money_to_int(worldwide)
 
-    # Create movie dictionary and return
-    movie_dict = dict(zip(headers, data_list1))
+    # Collect production companies
+    production_co = soup.find('h4', text=re.compile(
+        'Production Co')).findParent().text
+    production_co = production_co.split('\n')[2].strip()
+    production_co = [co.strip() for co in production_co.split(',')]
+
+    # Collect runtime
+    runtime = soup.find('h4', text=re.compile('Runtime')).findParent().text
+    runtime = int(runtime.split('\n')[2].split(' ')[0])
+
+    data_list = [title, rating_10, raters, mpaa, genre,
+                 director, writer, stars, country, language,
+                 release_date, budget, opening_weekend, gross_usa, worldwide,
+                 production_co, runtime]
+
+    movie_dict = dict(zip(headers, data_list))
 
     return movie_dict
 
