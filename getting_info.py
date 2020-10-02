@@ -43,15 +43,10 @@ def get_movie_data(link):
     except:
         raters = None
 
-    # Segment data to make extraction easier
-    try:
-        subtext = soup.find(class_='subtext').text.split('\n')
-    except:
-        subtext = None
-
     # Collection MPAA
     try:
-        mpaa = subtext[1].strip()
+        mpaa = soup.find('a', text=re.compile('MPAA'))
+        mpaa.findNext().text.split(' ')[1]
     except:
         mpaa = None
 
