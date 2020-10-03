@@ -1,0 +1,5 @@
+# Ignore VS Code settings file
+.vscode
+
+# Ignore Python cache folder
+_pycache_
