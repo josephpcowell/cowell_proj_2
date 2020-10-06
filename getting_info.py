@@ -64,7 +64,16 @@ def get_movie_data(link):
         raters = None
 
     # Collection MPAA
-    mpaa_options = ["G", "PG", "PG-13", "R", "NC-17"]
+    mpaa_options = [
+        "G",
+        "PG",
+        "PG-13",
+        "R",
+        "NC-17",
+        "TV-MA",
+        "Unrated",
+        "Not Rated",
+    ]
     try:
         mpaa = soup.find(class_="subtext").text
         mpaa = mpaa.split("\n")[1].strip()
