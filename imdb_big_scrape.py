@@ -24,6 +24,7 @@ import requests
 #         start += 100
 #     return links
 
+
 def get_movie_links(pages, start=1):
     """
     The basis is movies released between 2015 and 2020
