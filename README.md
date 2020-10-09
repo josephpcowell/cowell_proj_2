@@ -1,7 +1,7 @@
-# Predicting IMDb Ratings for the Russo Brothers
+# Predicting IMDb Ratings with Linear Regression
 
 ## Description
-Grimes and Elon Musk want to get into the movie industry, but they don't want to create any old movie, they are looking to make a movie that is a top ranked movie, something people will watch for years. They recruited Joe Cowell, an up-and-coming data scientist, to conduct an analysis to inform them on what makes a movie get a high rating on IMDb. The resulting model describes what is important for IMDb movie rankings.
+Some well known artists want to get into the movie industry, but they don't want to create any old movie, they are looking to make a movie that is a top ranked movie, something people will watch for years. They recruited Joe Cowell, an up-and-coming data scientist, to conduct an analysis to inform them on what makes a movie get a high rating on IMDb. The resulting model describes what is important for IMDb movie rankings.
 
 ## Features and Target Variables
 - Target Variable: IMDb Rating
