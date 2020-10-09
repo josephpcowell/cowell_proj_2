@@ -4,6 +4,5 @@
 # Ignore Python cache folder
 __pycache__
 
-#Ignore pickle files
-*.pickle
-*.pickle2
+# Ignore DS_Store
+.DS_Store
