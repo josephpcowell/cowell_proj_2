@@ -1,3 +1,7 @@
+"""
+A helper function to turn an IMDb search into a links to be further processed.
+"""
+
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
@@ -7,9 +11,14 @@ import requests
 
 def get_movie_links(pages, start=1):
     """
-    The basis is movies released between 2015 and 2020
-    input: number of pages you want to scrape and the starting page
-    output: return list containing links to movie pages
+    Creates a list of links to be scraped for movie data
+
+    Args: 
+        pages: An int representing the number of pages that will be scraped
+        start: An int representing the starting page in regard to the search. This number starts at 1 and increased by 100.
+    
+    Returns:
+        A list containing links to movie pages
     """
     links = []
     for i in range(pages):
