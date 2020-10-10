@@ -1,7 +1,7 @@
 # Predicting IMDb Ratings with Linear Regression
 
 ## Description
-Some well known artists want to get into the movie industry, but they don't want to create any old movie, they are looking to make a movie that is a top ranked movie, something people will watch for years. They recruited Joe Cowell, an up-and-coming data scientist, to conduct an analysis to inform them on what makes a movie get a high rating on IMDb. The resulting model describes what is important for IMDb movie rankings.
+This repository contains a working model to predict IMDb ratings for a movie using features available prior to the movie's release. The model uses linear regression and features obtained through scraping movie information from IMDb using BeautifulSoup. 
 
 ## Features and Target Variables
 - Target Variable: IMDb Rating
@@ -22,5 +22,5 @@ Scraped over 8,000 IMDb pages to collect movie data.
 - Seaborn
 - Matplotlib
 
-## Possible impacts of your project
+## Potential Impact
 - This model is a good basis for producers or movie enthusiasts to understand what rating a movie will get after it is released based on variables that can all be determined prior to the release of the movie.
