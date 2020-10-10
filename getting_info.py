@@ -1,3 +1,7 @@
+"""
+This file contains functions to help organize data scraped from IMDb.
+"""
+
 from bs4 import BeautifulSoup
 from IPython.core.display import display, HTML
 import requests
@@ -7,8 +11,13 @@ from datetime import datetime
 
 def get_movie_data(link):
     """
-    Makes a DataFrame from as many pages as requested.
+    Makes a Dicitonary of movies and it's information.
 
+    Args:
+        link: A string that is the end of a IMDb url for a specific movie.
+
+    Returns:
+        A dictionary with information regarding the movie that is associated with the link passed in.
     """
     base_url = "https://www.imdb.com"
 
@@ -234,8 +243,14 @@ def get_movie_data(link):
 
 
 def money_to_int(moneystring):
+    """
+    Cleans up money information.
+
+    Args:
+        moneystring: a string that contains commas and a dollar sign
+
+    Returns:
+        An integer representing the dollar amount passed in.
+    """
     moneystring = moneystring.replace("$", "").replace(",", "")
     return int(moneystring)
-
-
-# %%
