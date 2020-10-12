@@ -6,3 +6,6 @@ __pycache__
 
 # Ignore DS_Store
 .DS_Store
+
+# Ignore checkpoints
+.ipynb_checkpoints
