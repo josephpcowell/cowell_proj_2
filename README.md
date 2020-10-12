@@ -1,5 +1,14 @@
 # Predicting IMDb Ratings with Linear Regression
 
+## Contents
+[Notebook to run through my modeling process](imdb_rating_proj.ipynb)<br>
+[Folder of .py files to properly run the notebook](helper_functions)<br>
+[Exact data I used for to create the model](data)<br>
+[Visualizations used in my final presentation](images)<br>
+[Slides for my final presentation of the model](imdb_rating_presentation.pdf)
+
+
+
 ## Description
 This repository contains a working model to predict IMDb ratings for a movie using features available prior to the movie's release. The model uses linear regression and features obtained through scraping movie information from IMDb using BeautifulSoup. 
 
