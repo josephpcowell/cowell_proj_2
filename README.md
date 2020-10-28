@@ -1,12 +1,12 @@
 # Predicting IMDb Ratings with Linear Regression
 
 ## Contents
-[Notebook](imdb_rating_proj.ipynb) to run through my modeling process<br>
-[Folder](helper_functions) of .py files to properly run the notebook<br>
-Exact [data](data) I used for to create the model<br>
-[Visualizations](images) used in my final presentation<br>
-Slides for my final [presentation](imdb_rating_presentation.pdf) of the model<br>
-<br>
+- [Notebook](imdb_rating_proj.ipynb) to run through my modeling process<br>
+- [Folder](helper_functions) of .py files to properly run the notebook<br>
+- Exact [data](data) I used for to create the model<br>
+- [Visualizations](images) used in my final presentation<br>
+- Slides for my final [presentation](imdb_rating_presentation.pdf) of the model<br>
+
 Extras: Read the [blog post](https://towardsdatascience.com/predicting-imdb-movie-ratings-using-supervised-machine-learning-f3b126ab2ddb)
 
 
