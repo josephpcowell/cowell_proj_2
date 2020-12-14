@@ -34,4 +34,5 @@ Scraped over 8,000 IMDb pages to collect movie data.
 - Matplotlib
 
 ## Potential Impact
-- This model is a good basis for producers or movie enthusiasts to understand what rating a movie will get after it is released based on variables that can all be determined prior to the release of the movie.
+This model is a good basis for producers or movie enthusiasts to understand what rating a movie will get after it is released based on variables that can all be determined prior to the release of the movie. Below is a visual illustrating the results from the analysis, highlighting what features had the largest effect on the model. <br><br>
+![alt text](Images/top_features.png)
